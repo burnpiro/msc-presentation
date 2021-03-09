@@ -5,12 +5,13 @@
   <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
   <meta name="author" content="Kemal Erdem">
 
-  <title>WRM Temporal Network</title>
+  <title>MSc Thesis Presentation - Kemal Erdem</title>
 
   <link rel="stylesheet" href="dist/reset.css">
   <link rel="stylesheet" href="dist/reveal.css">
+  <link rel="stylesheet" href="dist/custom.css">
   <link rel="stylesheet" href="plugin/pointer/pointer.css">
-  <link rel="stylesheet" href="dist/theme/black.css" id="theme">
+  <link rel="stylesheet" href="dist/theme/serif.css" id="theme">
 
   <!-- Theme used for syntax highlighting of code -->
   <link rel="stylesheet" href="css/highlight/isbl-editor-light.css">
@@ -18,26 +19,101 @@
 <body>
 <div class="reveal">
   <div class="slides">
-    <section>
-      <h2>Presentation </h2>
-      <h5>("Q" for pointer)</h5>
-      <small>Authors...</small>
+    <section data-menu-title="Start">
+      <span class="heading">Attribution methods in interpretability of CNNs</span><br/>
+      <small>Author: Kemal Erdem</small>
     </section>
-    <section>
-      <h2>Slide 1</h2>
+    <section data-menu-title="What is a problem">
+      <span class="heading-secondary">What is a problem?</span>
+      <ul>
+        <li>We don't know how to compare XAI methods</li>
+        <li>No one is checking the metrics on real data</li>
+      </ul>
+    </section>
+    <section data-menu-title="Difficult to explain">
+      <figure><img src="assets/xai-alien.jpg" style="height: 70vh"><figcaption>Source: <a href="https://twitter.com/mtvcell/status/1287463630078976005">"cell" on Twitter</a></figcaption></figure>
+    </section>
+    <section data-menu-title="The Goal">
+      <span class="heading">The goal?</span>
+        <ul class="fragment">
+          <li>Compare metrics (different methods, different models, different datasets)</li>
+          <li>Check if metrics make sense (spoiler... they don't)</li>
+          <li>Check which method works</li>
+        </ul>
+    </section>
+    <section data-menu-title="What are the methods">
+      <span class="heading-secondary">What are the methods?</span>
+      <img src="assets/methods.png">
+    </section>
+
+    <section data-menu-title="Maybe metrics then?">
+      <span class="heading-secondary">Maybe metrics then?</span>
+
+      <img src="assets/metrics.png">
+      <span class="small">Only two metrics available in the most popular XAI library: <a href="https://captum.ai/api/metrics.html">Captum</a></span>
+    </section>
+    <section data-menu-title="Unintuitive intuition behind the Infidelity">
+      <span class="heading-secondary">Unintuitive intuition behind the Infidelity</span>
+
+      <figure style="font-size: 1.8rem">
+        $$
+        \operatorname{INFD}(\Phi, \mathbf{f}, \mathbf{x})=\mathbb{E}_{\mathbf{I} \sim \mu_{\mathrm{I}}}\left[\left(\mathbf{I}^{T} \Phi(\mathbf{f}, \mathbf{x})-(\mathbf{f}(\mathbf{x})-\mathbf{f}(\mathbf{x}-\mathbf{I}))\right)^{2}\right]
+        $$
+        $$
+        \Phi^{*}(\mathbf{f}, \mathbf{x})=\left(\int \mathbf{I I}^{T} d \mu_{\mathbf{I}}\right)^{-1}\left(\int \mathbf{I I}^{T} I G(\mathbf{f}, \mathbf{x}, \mathbf{I}) d \mu_{\mathbf{I}}\right)
+        $$
+        $$
+        \mathrm{IG}(\mathbf{f}, \mathbf{x}, \mathbf{I})=\int_{t=0}^{1} \nabla \mathbf{f}(\mathbf{x}+(t-1) \mathbf{I})
+        $$
+        <figcaption style="margin-top: 10px">Infidelity calculation, Source: <a target="_blank" href="https://arxiv.org/pdf/1901.09392.pdf">On the (In)fidelity and Sensitivity of Explanations</a></figcaption>
+      </figure>
+    </section>
+    <section data-menu-title="Actual intuition">
+      <span class="heading-secondary">Actual intuition behind the Infidelity</span>
+      <figure><img src="assets/inf-sample.png" style="max-height: 60vh"><figcaption>Sample infideilty calculations for different noises.</figcaption></figure>
+    </section>
+    <section data-menu-title="Qualitative vs Quantitative methods" data-background-image="assets/einstein.jpg">
+    </section>
+    <section data-menu-title="Experiments">
+      <span class="heading-secondary">Experiments</span>
+      <div class="display-column small" style="margin-top: 40px">
+        <div style="margin-right: 40px">
+          <strong>Datasets</strong>
+          <ul>
+            <li><a href="https://www.kaggle.com/jessicali9530/stanford-dogs-dataset">Stanford Dogs Dataset</a></li>
+            <li><a href="https://www.kaggle.com/kmader/food41">Food 101</a></li>
+            <li><a href="https://www.kaggle.com/gverzea/edible-wild-plants">Edible wild plants</a></li>
+            <li><a href="https://www.kaggle.com/muhammadjawad1998/plants-dataset99-classes?select=Plant_Data">Plants Dataset</a></li>
+            <li><a href="https://www.kaggle.com/hchen13/marvel-heroes">Marvel Heroes</a></li>
+          </ul>
+        </div>
+        <div>
+          <strong>Models</strong>
+          <ul>
+            <li><a href="https://arxiv.org/abs/1512.03385">ResNet18 (arxiv, 1512.03385)</a></li>
+            <li><a href="https://arxiv.org/abs/1905.11946">EfficientNetB0 (arxiv, 1905.11946)</a></li>
+            <li><a href="https://arxiv.org/abs/1608.06993">DenseNet121 (arxiv, 1608.06993)</a></li>
+          </ul>
+        </div>
+        <div>
+          <strong>Methods</strong>
+          <ul>
+            <li><a href="https://arxiv.org/pdf/1312.6034.pdf">Saliency (arxiv, 1312.6034)</a></li>
+            <li><a href="https://arxiv.org/pdf/1311.2901.pdf">Deconvolution (arxiv, 1311.2901)</a></li>
+            <li><a href="https://arxiv.org/pdf/1412.6806.pdf">Guided Backpropagation (arxiv, 1412.6806)</a></li>
+            <li><a href="https://arxiv.org/pdf/1610.02391.pdf">Guided GradCAM (arxiv, 1610.02391)</a></li>
+          </ul>
+        </div>
+      </div>
+    </section>
+    <section data-menu-title="Work Split">
+      <span class="heading-secondary">Work Split</span>
       <p>
-        ABC
-        $$
-        a_b
-        $$
+        <ul>
+      <li><strong>Phase 1</strong>: Publication on Infidelity and Sensitivity as a method to compare XAI solutions (almost done)</li>
+          <li><strong>Phase 2</strong>: Master's Thesis which combines Phase 1 and additional work on the XAI methods</li>
+        </ul>
       </p>
-      <pre><code data-trim data-noescape>
-(def lazy-fib
-  (concat
-   [0 1]
-   ((fn rfib [a b]
-        (lazy-cons (+ a b) (rfib b (+ a b)))) 0 1)))
-  </code></pre>
     </section>
     <section>
       <h2>Thanks</h2>
@@ -68,7 +144,7 @@
     hash: true,
     controls: true,
     progress: true,
-    slideNumber: false,
+    slideNumber: true,
     overview: true,
     center: true,
     navigationMode: 'default',
@@ -95,6 +171,14 @@
         { name: 'Black', theme: 'dist/theme/black.css' },
         { name: 'Moon', theme: 'dist/theme/moon.css' },
         { name: 'Simple', theme: 'dist/theme/simple.css' },
+        { name: 'Beige', theme: 'dist/theme/beige.css' },
+        { name: 'blood', theme: 'dist/theme/blood.css' },
+        { name: 'league', theme: 'dist/theme/league.css' },
+        { name: 'night', theme: 'dist/theme/night.css' },
+        { name: 'serif', theme: 'dist/theme/serif.css' },
+        { name: 'sky', theme: 'dist/theme/sky.css' },
+        { name: 'solarized', theme: 'dist/theme/solarized.css' },
+        { name: 'white', theme: 'dist/theme/white.css' },
       ]
     },
     pointer: {
